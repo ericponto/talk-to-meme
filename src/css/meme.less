@@ -1,0 +1,50 @@
+.meme {
+	position: relative;
+	width: 400px;
+	max-width: 100%;
+	margin: 0 auto 16px auto;
+	border: 16px solid #fff;
+
+	img {
+		display: block;
+		width: 100%;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+}
+
+.meme-text {
+	color: #fff;
+	-webkit-text-stroke: 2px #000;
+	text-stroke: 2px #000;
+	text-shadow: 0 0 6px #000;
+	font-family: "Open Sans", sans-serif;
+	font-weight: 800;
+}
+
+.meme-top, .meme-bottom {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	font-size: 3.5em;
+	line-height: 0.9;
+}
+
+.meme-top {
+	top: 8px;
+}
+
+.meme-bottom {
+	bottom: 8px;
+}
+
+.temp {
+	color: #999;
+	padding: 16px;
+
+	&:after {
+		content: "...";
+	}
+}

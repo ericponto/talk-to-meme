@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" ng-app="TextToMeme">
+<head>
+	<meta charset="UTF-8">
+	<title>Talk to Meme</title>
+
+	<meta name="description" content="Talk to Meme, a meme based transcription app.">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:800" rel="stylesheet">
+	<link rel="stylesheet" href="css/app.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+	<script src="js/app.js"></script>
+</head>
+<body>
+	
+	<header>
+		<h1 class="meme-text">Talk to Meme</h1>
+	</header>
+
+	<div ng-controller="MemeCtrl">
+		<div class="controls">
+
+			<span class="recording" ng-class="{ 'recording-on' : started }"></span>
+
+			<button ng-click="startRecording()" class="button" ng-class="{ 'button-disabled' : started }">Start</button>
+
+			<button ng-click="stopRecording()" class="button button-stop" ng-class="{ 'button-disabled' : !started }">Stop</button>
+		</div>
+
+		<div class="error" ng-class="{ 'error-show' : error.length }">
+			<span>{{error}}</span>
+		</div>
+
+		<div class="temp">
+			<span>{{tempTranscript}}</span>
+		</div>
+
+		<div class="meme" ng-repeat="meme in memes">
+			<img ng-src="{{meme.imageUrl}}">
+			<div class="meme-top meme-text">{{meme.topText}}</div>
+			<div class="meme-bottom meme-text">{{meme.bottomText}}</div>
+		</div>
+
+	</div>
+</body>
+</html>

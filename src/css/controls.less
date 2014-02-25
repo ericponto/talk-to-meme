@@ -1,0 +1,64 @@
+.controls {
+	position: relative;
+	padding: 1em;
+	background-color: #fff;
+	text-align: center;
+}
+
+.button-mixin(@bg) {
+	background-color: @bg;
+	border-color: darken(@bg, 10%);
+
+	&:hover, &:focus {
+		background-color: lighten(@bg, 10%);
+	}
+
+	&:active {
+		border-color: darken(@bg, 15%);
+	}
+}
+
+.button {
+	color: #fff;
+	padding: 0.5em 1em;
+	border: 1px solid;
+	border-radius: .25em;
+	cursor: pointer;
+	font-size: 14px;
+
+	.button-mixin(#393);
+}
+
+.button-stop {
+	.button-mixin(#c33);
+}
+
+.button-disabled {
+	background: #ccc!important;
+	border-color: #bbb!important;
+	color: #888!important;
+	cursor: default;
+}
+
+.recording {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	display: block;
+	height: 1em;
+	width: 1em;
+	border-radius: 50%;
+	background-color: #ccc;
+	border: 1px solid #999;
+}
+
+@keyframes pulse {
+	0%   { box-shadow: 0 0 0 #f33; }
+	100% { box-shadow: 0 0 12px #f33; }
+}
+
+.recording-on {
+	background-color: #c33;
+	border-color: #933;
+	animation: pulse 1s alternate infinite;
+}
