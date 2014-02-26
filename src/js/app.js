@@ -8,7 +8,7 @@ app.controller("MemeCtrl", function($scope, $http) {
 	$scope.memes = [];
 	
 	// initial state
-	$scope.started = "";
+	$scope.started = false;
 	$scope.tempTranscript = "Press Start, then just talk";
 	$scope.error = "";
 
@@ -20,6 +20,22 @@ app.controller("MemeCtrl", function($scope, $http) {
 		var recognition = new SpeechRecognition();
 		recognition.continuous = true;
 		recognition.interimResults = true;
+
+		var createMeme = function (words) {
+			var firstHalf = Math.floor( words.length / 2 );
+			var topWords = words.slice(0, firstHalf).join(" ");
+			var bottomWords = words.slice(firstHalf).join(" ");
+			var longestWord = words.sort(function (a, b) { return b.length - a.length; })[0];
+
+			// get meme
+			$http.get("/search/" + longestWord).success(function(data) {
+				$scope.memes.unshift({
+					topText: topWords,
+					bottomText: bottomWords,
+					imageUrl: data.result[0].imageUrl
+				});
+			});
+		};
 
 		// process the results
 		recognition.onresult = function(event) {
@@ -42,19 +58,13 @@ app.controller("MemeCtrl", function($scope, $http) {
 
 			if (finalTranscript.length) {
 				var words = finalTranscript.split(" ");
-				var firstHalf = Math.floor( words.length / 2 );
-				var topWords = words.slice(0, firstHalf).join(" ");
-				var bottomWords = words.slice(firstHalf).join(" ");
-				var longestWord = words.sort(function (a, b) { return b.length - a.length; })[0];
-
-				// get meme
-				$http.get("/search/" + longestWord).success(function(data) {
-					$scope.memes.unshift({
-						topText: topWords,
-						bottomText: bottomWords,
-						imageUrl: data.result[0].imageUrl
-					});
-				});
+				if (words.length > 7) {
+					var firstHalf = Math.floor( words.length / 2 );
+					createMeme(words.slice(firstHalf));
+					createMeme(words.slice(0, firstHalf));
+				} else {
+					createMeme(words);
+				}
 			}
 			
 		};
@@ -68,10 +78,10 @@ app.controller("MemeCtrl", function($scope, $http) {
 			$scope.started = false;
 		};
 
-
 		$scope.startRecording = function() {
 			recognition.start();
 			$scope.started = true;
+			$scope.error = "";
 		};
 
 		$scope.stopRecording = function() {
